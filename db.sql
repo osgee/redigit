@@ -1,0 +1,30 @@
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+CREATE TABLE "auth_user" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "password" varchar(128) NOT NULL, "last_login" datetime NOT NULL, "is_superuser" bool NOT NULL, "username" varchar(30) NOT NULL UNIQUE, "first_name" varchar(30) NOT NULL, "last_name" varchar(30) NOT NULL, "email" varchar(75) NOT NULL, "is_staff" bool NOT NULL, "is_active" bool NOT NULL, "date_joined" datetime NOT NULL);
+INSERT INTO "auth_user" VALUES(1,'pbkdf2_sha256$12000$iSXIzBwbFZRP$/+qtlWQgMr7zbQ3KTlAbHb5fM+lbbbG9IwI/15hUUG0=','2015-08-27 00:11:57.664867',1,'taofeng','','','ft.nudt@gmail.com',1,1,'2015-08-26 23:57:48.417639');
+COMMIT;
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+CREATE TABLE "auth_permission" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" varchar(50) NOT NULL, "content_type_id" integer NOT NULL REFERENCES "django_content_type" ("id"), "codename" varchar(100) NOT NULL, UNIQUE ("content_type_id", "codename"));
+INSERT INTO "auth_permission" VALUES(1,'Can add log entry',1,'add_logentry');
+INSERT INTO "auth_permission" VALUES(2,'Can change log entry',1,'change_logentry');
+INSERT INTO "auth_permission" VALUES(3,'Can delete log entry',1,'delete_logentry');
+INSERT INTO "auth_permission" VALUES(4,'Can add permission',2,'add_permission');
+INSERT INTO "auth_permission" VALUES(5,'Can change permission',2,'change_permission');
+INSERT INTO "auth_permission" VALUES(6,'Can delete permission',2,'delete_permission');
+INSERT INTO "auth_permission" VALUES(7,'Can add group',3,'add_group');
+INSERT INTO "auth_permission" VALUES(8,'Can change group',3,'change_group');
+INSERT INTO "auth_permission" VALUES(9,'Can delete group',3,'delete_group');
+INSERT INTO "auth_permission" VALUES(10,'Can add user',4,'add_user');
+INSERT INTO "auth_permission" VALUES(11,'Can change user',4,'change_user');
+INSERT INTO "auth_permission" VALUES(12,'Can delete user',4,'delete_user');
+INSERT INTO "auth_permission" VALUES(13,'Can add content type',5,'add_contenttype');
+INSERT INTO "auth_permission" VALUES(14,'Can change content type',5,'change_contenttype');
+INSERT INTO "auth_permission" VALUES(15,'Can delete content type',5,'delete_contenttype');
+INSERT INTO "auth_permission" VALUES(16,'Can add session',6,'add_session');
+INSERT INTO "auth_permission" VALUES(17,'Can change session',6,'change_session');
+INSERT INTO "auth_permission" VALUES(18,'Can delete session',6,'delete_session');
+CREATE INDEX auth_permission_417f1b1c ON "auth_permission" ("content_type_id");
+COMMIT;
+auth_user
+auth_permission
