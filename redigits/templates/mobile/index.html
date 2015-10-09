@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Digit Recognizer</title>
+    {% load staticfiles %}
+    <script src="{% static 'javascripts/jquery.min.js' %}"></script>
+    <style type="text/css">
+      #imageView {  margin: auto;
+    /*width: 60%;*/
+    border:3px solid #8AC007;
+    display:block;
+    padding: 0px;}
+      #buttons {
+    text-align:center;
+    display:block;}
+    </style>
+    
+    <script type="text/javascript" src="{% static 'javascripts/skecher.js' %}"></script>
+    <script type="text/javascript" src="{% static 'javascripts/trigonometry.js' %}"></script>
+    <script type="text/javascript" src="{% static 'javascripts/Modernizr.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css'%}" type="text/css" /><script>
+$(document).ready(function(e) {
+	
+	var sketcher = null;
+	var brush = null;
+	brush = new Image();
+	brush.src="{% static 'brush/brush_blue.png'%}"
+	var height = $(document).height();
+	var width = $(document).width();
+	$("#sketch").attr("height", height-50);
+	$("#sketch").attr("width", width-10);
+	sketcher = new Sketcher( "imageView", brush );
+	$(".box").click(function(){
+		//console.log(this.src);
+		brush.src = this.src;
+	});
+	$(".box").touch(function(){
+		brush.src = this.src;
+	});
+});
+
+function clearCanvas(){
+	var c = document.getElementById("imageView")
+	c.getContext('2d').clearRect(0,0,500,500);
+}
+function exportCanvas(){
+	var c = document.getElementById("imageView");
+	return c.toDataURL("image/png")
+}
+</script>
+  </head>
+  <body>
+    <div id="title" class="logo">
+  	<h1><a href="https://ide.c9.io/anyview/redigits/"><span class="head_1">Handwriting Digits</span> Recognizer</a></h1>
+    </div>
+    <hr>
+    <div class="container-fluid" style="background-color:white; text-align:center;">
+			<h3>Select one of the following brush and write a digit</h3>
+			<a href="#title"><img src="{%static 'brush/brush_red.png'%}" class="box" id="brush1"/></a>
+			<a href="#title"><img src="{%static 'brush/brush_blue.png'%}" class="box" id="brush"/></a>
+			<a href="#title"><img src="{%static 'brush/brush_pink.png'%}" class="box" id="brush3"/></a>
+			<a href="#title"><img src="{%static 'brush/brush_lightblue.png'%}" class="box" id="brush4"/></a>
+			<a href="#title"><img src="{%static 'brush/brush_yellow.png'%}" class="box" id="brush5"/></a>
+			<a href="#title"><img src="{%static 'brush/brush_pink_transparent.png'%}" class="box" id="brush6"/></a>
+			<a href="#title"><img src="{%static 'brush/brush_7.png'%}" class="box" id="brush7"/></a>
+			<a href="#title"><img src="{%static 'brush/brush_8.png'%}" class="box" id="brush8"/></a>
+			<a href="#title"><img src="{%static 'brush/brush_9.png'%}" class="box" id="brush9"/></a>
+			<a href="#title"><img src="{%static 'brush/brush_10.png'%}" class="box" id="brush10"/></a>
+		  </div>
+    <div id="container" class="login_1 login_2">
+      <ul id="imageContainer"class="various-grid accout-login2 login_3">
+        <canvas id="imageView" width="500px;" height="500px;"> </canvas>
+			</ul>
+				<div class="but_4">
+				  <span id="buttons"> <input class="g-btnn" id="predict" type="button" value="Predict">
+        <input class="g-btnn" id="clear" type="button" value="Clear" onclick="clearCanvas();"></span>
+			 
+			</div>	
+      </div>
+    <script type="text/javascript">
+      var canvas = document.getElementById('imageView');
+      var context = canvas.getContext('2d');
+      context.lineJoin = context.lineCap = 'round';
+      var isDrawing, lastPoint;
+      $("#number").text("Draw a Number");
+      $("#clear").click();
+      $("#send").click(function(e) {
+        var img = canvas.toDataURL();
+        $.post("/", {img: img}, function() {
+            window.location.replace("/");
+        })
+        return false;
+      });
+      $("#predict").click(function(e) {
+        if(!isCanvasBlank(canvas)){
+          var img = canvas.toDataURL();
+           $.post("{% url 'predict'%}", {img: img}, function(d) {
+          alert(d);
+        })
+        }
+       
+        return false;
+        }); 
+      $("#clear").click(function(e) {
+        context.fillStyle = 'white';
+        context.fillRect(0, 0, 500, 500);
+      });
+      
+    function isCanvasBlank(canvas) {
+    var blank = document.createElement('canvas');
+    blank.width = canvas.width;
+    blank.height = canvas.height;
+
+    return canvas.toDataURL() == blank.toDataURL();
+}
+    </script>
+  </body>
+</html>
+

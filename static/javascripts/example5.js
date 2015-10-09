@@ -67,6 +67,9 @@ window.addEventListener('load', function () {
     canvas.addEventListener('mousedown', ev_canvas, false);
     canvas.addEventListener('mousemove', ev_canvas, false);
     canvas.addEventListener('mouseup',   ev_canvas, false);
+    canvas.addEventListener('touchstart', ev_canvas, false);
+    canvas.addEventListener('touchmove', ev_canvas, false);
+    canvas.addEventListener('touchend',   ev_canvas, false);
   }
 
   // The general-purpose event handler. This function just determines the mouse 
@@ -109,7 +112,10 @@ window.addEventListener('load', function () {
   tools.pencil = function () {
     var tool = this;
     this.started = false;
-    context.lineWidth = 10;
+    context.lineWidth = 30;
+    context.shadowBlur = 10;
+    context.lineJoin = context.lineCap = 'round';
+    context.shadowColor = 'rgb(0, 0, 0)';
 
     // This is called when you start holding down the mouse button.
     // This starts the pencil drawing.
@@ -137,7 +143,37 @@ window.addEventListener('load', function () {
         img_update();
       }
     };
+    
+    // This is called when you start holding down the mouse button.
+    // This starts the pencil drawing.
+    this.touchstart = function (ev) {
+        context.beginPath();
+        context.moveTo(ev._x, ev._y);
+        tool.started = true;
+    };
+
+    // This function is called every time you move the mouse. Obviously, it only 
+    // draws if the tool.started state is set to true (when you are holding down 
+    // the mouse button).
+    this.touchmove = function (ev) {
+      if (tool.started) {
+        context.lineTo(ev._x, ev._y);
+        context.stroke();
+      }
+    };
+
+    // This is called when you release the mouse button.
+    this.touchend = function (ev) {
+      if (tool.started) {
+        tool.mousemove(ev);
+        tool.started = false;
+        img_update();
+      }
+    };
   };
+
+
+
 
   // The rectangle tool.
   tools.rect = function () {
