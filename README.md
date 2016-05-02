@@ -12,11 +12,11 @@ We dicide to use python to handle the hard work!
 
         The operating system is Ubuntu
         Python version is 2.7
-        Django version is 1.7
+        Django version is 1.9
 
 # Dependencies
 
-        django  numpy  scipy  nolearn  pandas  PIL
+        django  numpy  scipy  nolearn  pandas  pillow
 
 # Commands to configure dependency
 
@@ -24,8 +24,16 @@ We dicide to use python to handle the hard work!
         $ sudo apt-get install python-pip
         $ sudo pip install numpy scipy nolearn pandas
         $ sudo apt-get install libpng-dev libjpeg8-dev libfreetype6-dev 
-        $ sudo pip install matplotli
-        $ sudo pip install PIL
+        $ sudo pip install matplotlib
+        $ sudo pip install pillow
+
+# Use virtualenv
+
+To install the latest version of nolearn from Git using pip, run the following commands:
+
+        $ pip install -r https://raw.githubusercontent.com/dnouri/nolearn/master/requirements.txt
+        $ pip install git+https://github.com/dnouri/nolearn.git@master#egg=nolearn==0.7.git
+
     
 # Usages
 
